@@ -162,10 +162,14 @@ class SitemapCommand extends Command
 
             // Add the node
             $entry = $urlset->addChild('url');
-            $entry->addChild('loc', $url);
-            $entry->addChild('lastmod', $lastmod->format('Y-m-d\TH:i:sP'));
-            $entry->addChild('priority', str_replace(',', '.', round((1 - .05 * Substr_count($url, '/')), 1)));
-            $entry->addChild('changefreq', 'monthly');
+            
+            // Exclude pdf links
+            if(substr($url, -4) != '.pdf'){
+                $entry->addChild('loc', $url);
+                $entry->addChild('lastmod', $lastmod->format('Y-m-d\TH:i:sP'));
+                $entry->addChild('priority', str_replace(',', '.', round((1 - .05 * Substr_count($url, '/')), 1)));
+                $entry->addChild('changefreq', 'monthly');
+            }
         }
 
         // Beautify XML (actually not needed, but neat)
